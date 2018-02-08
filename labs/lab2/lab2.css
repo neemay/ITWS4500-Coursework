@@ -1,0 +1,104 @@
+/* Code for the vertical ticker was adapted from:
+ * https://codepen.io/anon/pen/ZrOJyj
+ */
+
+@import url('https://fonts.googleapis.com/css?family=Patua+One');
+
+@keyframes ticker {
+	0%   {margin-top: 0}
+	25%  {margin-top: -30px}
+	50%  {margin-top: -60px}
+	75%  {margin-top: -90px}
+	100% {margin-top: 0}
+}
+
+body {
+  background-color: #E7ECEE;
+  font-family: 'Patua One', cursive;
+  background: url('https://s-media-cache-ak0.pinimg.com/originals/11/13/56/1113564623057474da56b739f1ad34ae.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+h1 {
+  margin: 0px;
+}
+
+h2 {
+  font-size: 28px;
+  text-align: center;
+  margin-top: 0px;
+  margin-bottom: 20px;
+}
+
+header {
+  background: rgba(204, 204, 204, 0.9);
+  margin: 0px;
+  padding: 10px;
+  font-size: 30px;
+  text-align: center;
+}
+
+ul {
+  padding-left: 0px;
+  text-align: center;
+  animation-name: ticker;
+  animation-duration: 10s;
+  animation-delay: 2s;
+  animation-iteration-count: infinite;
+}
+
+li {
+  list-style: none;
+  font-size: 20px;
+  height: 30px;
+}
+
+#forecast {
+  margin-top: 20px;
+}
+
+.data-ticker {
+  height: 30px;
+  overflow: hidden;
+  margin: 20px 0px;
+}
+
+.data-container {
+  background-color: rgba(183, 207, 247, .9);
+  border-radius: 20px;
+  padding: 20px;
+  padding-left: 10%;
+  padding-right: 10%;
+  width: 70%;
+  margin: auto;
+  text-align: center;
+}
+
+.icon {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: white;
+  margin-right: 50px;
+}
+
+.temp {
+  display: block;
+  font-size: 28px;
+  text-align: center;
+  overflow: auto;
+}
+
+.collected {
+  font-size: 12px;
+  text-align: center;
+}
+
+.description {
+  display: inline-block;
+}
+
+.details {
+  margin-top: 20px;
+  font-size: 18px;
+}

@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css?family=Patua+One');
+
+body {
+  background-color: #E7ECEE;
+}
+
+h1 {
+  margin: 0px;
+}
+
+h2 {
+  font-family: 'Patua One', cursive;
+  font-size: 20px;
+}
+
+header {
+  background-color: white;
+  margin: 0px;
+  padding: 10px;
+  font-family: 'Patua One', cursive;
+}
+
+ul {
+  padding-left: 0px;
+}
+
+li {
+  list-style: none;
+  padding: 10px;
+  background-color: white;
+  margin-bottom: 4px;
+}
+
+#tweet-container {
+  width: 60%;
+  float: left;
+  margin-right: 30px;
+}
+
+#hashtags-container {
+  float: right;
+  width: 30%;
+}
+
+.tweet-content {
+  min-height: 50px;
+}
+
+.tweet-text {
+  margin-left: 58px;
+}
+
+.profile {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 10px;
+  float: left;
+}
+
+.handle {
+  color: grey;
+  text-decoration: none;
+}
+
+.screename {
+  font-weight: bold;
+}
+
+.date {
+  float: right;
+  color: grey;
+  font-size: 12px;
+}
+
+.stats {
+  color: grey;
+  font-size: 11px;
+  display: block;
+}
+
+.logo {
+  width: 50px;
+  margin-right: 10px;
+  float: left;
+}
+
+.tags {
+  background-color: white;
+  font-size: 16px;
+  margin-bottom: 3px;
+  padding: 15px;
+  font-weight: bold;
+  display: block;
+}
+
+.tags:hover {
+  background-color: lightblue;
+}
