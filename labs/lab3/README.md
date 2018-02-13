@@ -20,3 +20,13 @@ the same bugs will help the team in the development process.
 For development itself, using Github will allow the team to develop in parallel without interfering with each other. It will also serve as version control for the team in
 case any changes need to be reverted. It will also allow for development branches to stay separated from the production branch to ensure that nothing that is complete and
 deployed is interfered with.
+
+To create the github repositories for my individual coursework and the project, repositories were made through github. Then, I cloned these repositories onto my local
+machine. From here, I added my existing lab files to my individual github by moving the files into the github repository. I then used the "git add" "git commit" and "git
+push" commands to update these changes in the remote repository.
+
+To install Bugzilla on my Windowd machine, I needed to have Perl, Apache, and MySQL installed. I already had versions of Apache and MySQL on my machine so I only needed to
+install Perl and its associated packages. I installed the bugzilla software by cloning the code from their Github repository into the proper directory. Once this was done, I
+needed to create an SQL user called 'bugs' and create an associated table for that user. I also needed to update a configuration file with the password for this user. Once
+this was done, the installation was complete and the checking script checksetup.pl was deemed complete. To install Bugzilla on the AWS server, we SSH'd into our server and
+followed the Linux installation instructions.
