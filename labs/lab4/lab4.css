@@ -24,7 +24,7 @@ h1 {
 }
 
 h2 {
-  font-size: 28px;
+  font-size: 24px;
   text-align: center;
   margin-top: 0px;
   margin-bottom: 20px;
@@ -61,12 +61,20 @@ li {
   text-align: center;
 }
 
+.multiple-forecast .icon {
+  width: 100px;
+  height: 100px;
+}
+
+.multiple-forecast .description {
+  font-size: 20px;
+}
 .daily {
   display: inline-block;
 }
 
 .daily-container {
-  width: 350px;
+  width: 275px;
 }
 .data-ticker {
   height: 30px;
