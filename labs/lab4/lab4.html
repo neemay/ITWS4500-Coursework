@@ -41,6 +41,23 @@
           <span class='collected'>Data collected: {{time}}</span>
         </div>
       </div>
+      <div class='multiple-forecast'>
+        <div class="daily col-lg-4" ng-repeat="day in forecast">
+          <div class='data-container daily-container'>
+            <h2>Forecast for {{day.date}} {{day.time}}</h2>
+            <div class='temp'>
+              <img class='icon' alt='Weather description image' ng-src='{{day.icon}}'>
+              <div class='description'>
+                {{day.desc}}<br/>
+                {{day.temp}}&deg;F
+              </div>
+            </div>
+            <div class='details'>
+              Details: {{day.details}}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
