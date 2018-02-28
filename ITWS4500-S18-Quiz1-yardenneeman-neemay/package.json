@@ -1,0 +1,17 @@
+{
+  "name": "neemay-quiz1server.js",
+  "version": "1.1.0",
+  "description": "Yarden Ne'eman Quiz 1",
+  "main": "neemay-Quiz1Server.js",
+  "scripts": {
+    "start": "node neemay-Quiz1Server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yarden Ne'eman",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "request": "^2.83.0"
+  }
+}
