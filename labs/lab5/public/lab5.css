@@ -28,15 +28,6 @@ header {
   display: inline-block;
 }
 
-#tweets {
-  margin-bottom: 20px;
-}
-#tweet-container {
-  width: 60%;
-  float: left;
-  margin-right: 30px;
-}
-
 #hashtags-container {
   float: right;
   width: 30%;
@@ -100,4 +91,26 @@ header {
 
 .loading {
   width: 50%;
+}
+
+.tags {
+  background-color: white;
+  font-size: 16px;
+  margin-bottom: 3px;
+  padding: 15px;
+  font-weight: bold;
+  display: block;
+}
+
+.tags:hover {
+  background-color: lightblue;
+}
+
+.trending {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.tweets-container {
+  margin-bottom: 20px;
 }
