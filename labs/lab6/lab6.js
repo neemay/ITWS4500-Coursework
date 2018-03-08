@@ -78,8 +78,10 @@ app.get('/query', function(req, res) {
   });
 });
 
+//Function to check if the file exists
 app.get('/check_file', function(req, res) {
   console.log("Checking if " + req.query.filename + " exists");
+  //Check if the file exists, if it does return a 400 error.
   fs.stat(req.query.filename, function(error, stat) {
     if(error == null) {
       res.sendStatus(400); //file exists
@@ -92,8 +94,10 @@ app.get('/check_file', function(req, res) {
   });
 });
 
+//Function to save the file given the filename and data
 app.get('/save', function(req, res) {
   console.log("Saving to file " + req.query.filename);
+  //Write the data to the specified file and return a status of 200 if successful
   fs.writeFile(req.query.filename, req.query.data, function(error) {
     if(error) {
       console.log(error);

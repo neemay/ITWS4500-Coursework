@@ -43,6 +43,7 @@ feed.controller('myCtrl', function($scope, $http) {
         count: $scope.count
       }
     }).then(function(response) { //on a successful call
+      //Store the full response data for later use
       $scope.json_data = response.data;
       //Initialize an array for the tweets
       $scope.tweets = [];
@@ -82,24 +83,34 @@ feed.controller('myCtrl', function($scope, $http) {
       $scope.error = response.data;
     });
   }
+  //Called when the user clicks the button to export the data
   $scope.export = function() {
+    //Hide the file saving errors
     $("#file_success").hide();
     $("#file_error").hide();
     var filename = $scope.filename + "." + $scope.filetype;
+    //Calls the server to check if the file exists
     $http.get("check_file", {
       params: {
         filename: filename
       }
     }).then(function(response) {
+      //If the server responds with a 200 status, the file does not exist and it can be written to
       $scope.saveFile();
     }).catch(function(response) {
+      //If the server responds with a 400 status, the file exists
+      //Open the confirmation modal
       $("#exists_modal").modal();
     });
-  } 
+  }
+  //Called when the file is to be saved
   $scope.saveFile = function() {
     var result;
+    //If the specified filetype is json
     if($scope.filetype == 'json') {
+      //Initialize the save_data array
       var save_data = [];
+      //Extract the desired fields using an angular foreach loop
       angular.forEach($scope.json_data, function(value) {
         var created_at = value["created_at"];
         var id = value["id"];
@@ -116,12 +127,19 @@ feed.controller('myCtrl', function($scope, $http) {
         var geo = value["geo"];
         var coordinates = value["coordinates"];
         var place = value["place"];
+        //Push this entry to the save_data array
         save_data.push({"created_at": created_at, "id": id, "text": text, "user_id": user_id, "user_name": user_name, "user_location": user_location, "user_followers_count": user_followers_count, "user_friends_count": user_friends_count, "user_created_at": user_created_at, "user_time_zone": user_time_zone, "user_profile_background_color": user_profile_background_color, "user_profile_image_url": user_profile_image_url, "geo": geo, "coordinates": coordinates, "place": place});
       });
+      //Turn this array into a JSON string
       result = JSON.stringify(save_data);
     }
+    //If the filetype is CSV
     else if($scope.filetype == 'csv') {
+      //Store the header row
       result = '"created_at","id","text","user_id","user_name","user_location","user_followers_count","user_friends_count","user_created_at","user_time_zone","user_profile_background_color","user_profile_image_url","geo","coordinates","place"\n';
+      //Iterate through each entry using an angular foreach loop
+      //Extract the data and append it to result, separate with commas
+      //Add a newline at the end of each entry
       angular.forEach($scope.json_data, function(value) {
         result += '"' + value["created_at"] + '",';
         result += '"' + value["id"] + '",';
@@ -140,20 +158,21 @@ feed.controller('myCtrl', function($scope, $http) {
         result += '"' + value["place"] + '"\n';
       });
     }
+    //Call the server to save the file
     $http.get("save", {
-        params: {
-          data: result,
-          filename: $scope.filename + "." + $scope.filetype
-        }
+      //Send the data to be saved and the filename to be saved under
+      params: {
+        data: result,
+        filename: $scope.filename + "." + $scope.filetype
+      }
     }).then(function(response) {
-        if(response.status = 200) {
-          $("#file_success").show();
-          $("#file_error").hide();
-        }
-        else {
-          $("#file_error").show();
-          $("#file_success").hide();
-        }
+      //If the server returns a success, show a success message
+        $("#file_success").show();
+        $("#file_error").hide();
+    }).catch(function(response) {
+      //If the server returns an error, show an error message
+        $("#file_success").hide();
+        $("#file_error").show();
     });
   }
 });

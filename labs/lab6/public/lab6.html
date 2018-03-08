@@ -44,7 +44,7 @@
             </select>
           </div>
           <div class='col-sm-5 col-md-4 col-lg-4'>
-            <label for="filename">Filename (without extension):</label>
+            <label for="filename">Filename (no extension):</label>
             <input id="filename" type="text" ng-model="filename" class="form-control">
           </div>
           <div class="col-sm-2 col-md-2 col-lg-2">
@@ -84,11 +84,9 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
+              <h2>The file {{filename}}.{{filetype}} already exists. Would you like to replace it?</h2>
             </div>
             <div class="modal-body">
-              The file {{filename}}.{{filetype}} already exists. Would you like to overwrite it?
-            </div>
-            <div class="modal-footer">
               <button type="button" class="btn btn-danger" id="overwrite" ng-click="saveFile()" data-dismiss="modal">Yes</button>
               <button type="button" class="btn btn-primary" id="cancel" data-dismiss="modal">Cancel</button>
             </div>
