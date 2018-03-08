@@ -1,0 +1,16 @@
+{
+  "name": "neemay-lab6",
+  "version": "1.0.0",
+  "description": "Yarden Ne'eman Web Science Lab 6",
+  "main": "lab6.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yarden Ne'eman",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^5.0.1",
+    "express": "^4.16.2",
+    "twitter": "^1.7.1"
+  }
+}
