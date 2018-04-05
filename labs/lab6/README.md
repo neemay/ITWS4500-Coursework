@@ -17,3 +17,7 @@ Other things to note for this lab:
 5) A file can only be exported if there is data available. As a result, the export button is disabled by default and is only enabled after data is pulled from the Twitter API. The button is also disabled whenever new tweets are being loaded.
 
 6) Included in the zip file are two of the files I saved: neemay-tweets.json and neemay-tweets.csv. These files were both exported from the same data that was generated using the search parameter "black panther" and a count of 5 tweets.
+
+7) The code can be run using the "npm start" command as defined in my package.json file. The file for the server is called lab6.js and the file with the angular code is called lab6-angular.js.
+
+8) Like for lab5, I used a .env file to separate my API keys from the code to increase the security of the application.

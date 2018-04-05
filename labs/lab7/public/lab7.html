@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<!-- Angular Application -->
+<html ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Yarden Ne'eman Lab 7</title>
+    <!-- Link to Minified Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="lab7.css">
+  </head>
+  <!-- Angular Controller -->
+  <body ng-controller="myCtrl">
+    <header>
+      <img class='logo' src="https://logos-download.com/wp-content/uploads/2016/02/Twitter_logo_bird_transparent_png.png">
+      <h1>Tweet Finder</h1>
+    </header>
+    <div class='container'>
+      <div class='tweets-container col-sm-12 col-md-8 col-lg-8'>
+        <h2>Insert your search criteria and we'll find tweets for you!</h2>
+        <form class="row form-container">
+          <div>
+            <div class="col-sm-5 col-md-4 col-lg-4">
+              <label for="search">Search for:</label>
+              <input id="search" type="text" ng-model="query" class="form-control" />
+            </div>
+            <div class="col-sm-5 col-md-4 col-lg-4">
+              <label for="count">Number of tweets:</label>
+              <input id="count" type="number" ng-model="count" class="form-control" min="1" max="25"/>
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2">
+              <button ng-click="search()" class="search btn btn-primary">Search</button>
+            </div>
+          </div>
+        </form>
+        <div id="spinner" ng-show="loading"><img class="loading" src="loading.gif"></div>
+        <div id="error" ng-show="error"><h2>{{error}}</h2></div>
+        <div id="foundTweets" ng-hide="export_disable">
+          <h2>{{tweet_count}} tweets were saved to the database</h2>
+          <button ng-click="readTweets()" class="btn btn-primary">Display tweets</button>
+          <button ng-click="resetDB()" class="btn btn-warning">Reset Database</button>
+          <h2>Export Tweets from Database:</h2>
+          <form class='row form-container'>
+            <div class='col-sm-5 col-md-4 col-lg-4'>
+              <label for="filetype">Filetype:</label>
+              <select ng-model="filetype" name='filetype' class='dropdown form-control'>
+                <option class="form-control" value="json">JSON</option>
+                <option class="form-control" value="csv">CSV</option>
+                <option class="form-control" value="xml">XML</option>
+              </select>
+            </div>
+            <div class='col-sm-5 col-md-4 col-lg-4'>
+              <label for="filename">Filename (no extension):</label>
+              <input id="filename" type="text" ng-model="filename" class="form-control">
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2">
+              <button id="export" ng-click="export()" class="btn btn-primary search" ng-disabled="export_disable">Export</button>
+            </div>
+          </form>
+          <div id="file_success" class="alert alert-success d-none">File was successfully saved</div>
+          <div id="file_error" class="alert alert-danger d-none">File could not be saved. Please try again later</div>
+        </div>
+        <div id="spinner2" ng-show="loading2"><img class="loading" src="loading.gif"></div>
+        <div id="tweets">
+          <h2 ng-show="tweet_count">We found {{tweet_count}} tweets for you!</h2>
+          <div class="tweet" ng-repeat="tweet in tweets">
+            <div class='tweet-content col-sm-12 col-md-12 col-lg-12'>
+              <img class='profile' ng-src='{{tweet.pic}}' onerror=this.src='anon.jpg';>
+              <a class='screename' href='https://www.twitter.com/{{tweet.screen_name}}'>{{tweet.name}} </a>
+              <span class='handle'>@{{tweet.screen_name}}</span>
+              <span class='date'>{{tweet.month}}/{{tweet.day}}/{{tweet.year}}</span>
+              <div class='tweet-text'>
+                {{tweet.text}}
+                <span class='stats'>Favorites: {{tweet.favorites}} Retweets: {{tweet.retweets}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='trending col-sm-12 col-md-4 col-lg-4'>
+        <h2>Trending Topics:</h2>
+        <div ng-repeat="trend in trending">
+          <a class='tags' href='{{trend.url}}'>{{trend.topic}}</a>
+        </div>
+      </div>
+      <div class="modal fade" id="exists_modal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h2>The file {{filename}}.{{filetype}} already exists. Would you like to replace it?</h2>
+            </div>
+            <div class="modal-body">
+              <button type="button" class="btn btn-danger" id="overwrite" ng-click="saveFile()" data-dismiss="modal">Yes</button>
+              <button type="button" class="btn btn-primary" id="cancel" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    </div>
+  </body>
+  <!-- Link to jQuery -->
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <!-- Link to Bootstrap Javascript -->
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- Link to Angular -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+  <!-- Link to script -->
+  <script src="lab7-angular.js"></script>
+</html>
