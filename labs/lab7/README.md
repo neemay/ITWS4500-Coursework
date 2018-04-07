@@ -18,3 +18,5 @@ Things to note for this lab:
 7) I used the mongoose package to handle the interaction between the node server and the Mongo database.
 
 8) At any point the user can click the "Reset Database" button to clear the tweets from the database. This doesn't delete the database itself, it just clears out the documents from the collection by using the mongoose "remove" function.
+
+9) The zip file includes examples of the JSON, CSV, and XML save files. Each of these files is named "neemay-tweets" with the appropriate extension and has 5 tweets that were collected using the search parameter "avengers".
