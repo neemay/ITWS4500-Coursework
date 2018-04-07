@@ -21,15 +21,15 @@
         <h2>Insert your search criteria and we'll add these tweets to the database!</h2>
         <form class="row form-container">
           <div>
-            <div class="col-xs-5 col-sm-10 col-md-10 col-lg-10">
+            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
               <label for="search">Search for:</label>
               <input id="search" type="text" ng-model="query" class="form-control" />
             </div>
-            <div class="col-xs-5 col-sm-10 col-md-10 col-lg-10">
+            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
               <label for="count">Number of tweets:</label>
               <input id="count" type="number" ng-model="count" class="form-control" min="1" max="25"/>
             </div>
-            <div class="col-xs-2 col-sm-10 col-md-10 col-lg-10">
+            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
               <button ng-click="search()" class="search btn btn-primary">Search</button>
             </div>
           </div>
@@ -40,7 +40,7 @@
           <h3 ng-show="tweet_results">{{tweet_results}} tweets were saved to the database</h3>
           <h2>Export Tweets from Database:</h2>
           <form class='row form-container'>
-            <div class='col-xs-5 col-sm-10 col-md-10 col-lg-10'>
+            <div class='col-xs-12 col-sm-10 col-md-10 col-lg-10'>
               <label for="filetype">Filetype:</label>
               <select id="filetype" ng-model="filetype" name='filetype' class='dropdown form-control' ng-click="hideAlerts()">
                 <option class="form-control" value="json">JSON</option>
@@ -48,11 +48,11 @@
                 <option class="form-control" value="xml">XML</option>
               </select>
             </div>
-            <div class='col-xs-5 col-sm-10 col-md-10 col-lg-10'>
+            <div class='col-xs-12 col-sm-10 col-md-10 col-lg-10'>
               <label for="filename">Filename (no extension):</label>
               <input id="filename" type="text" ng-model="filename" class="form-control" ng-click="hideAlerts()">
             </div>
-            <div class="col-xs-2 col-sm-10 col-md-10 col-lg-10">
+            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
               <button id="export" ng-click="export()" class="btn btn-primary search" ng-disabled="!tweet_count">Export</button>
             </div>
           </form>
