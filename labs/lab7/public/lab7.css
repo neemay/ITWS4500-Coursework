@@ -13,15 +13,17 @@ h2 {
   font-size: 20px;
 }
 
+h3 {
+  font-family: 'Patua One', cursive;
+  font-size: 18px;
+  margin-top: 0px;
+}
+
 header {
   background-color: white;
   margin: 0px;
   padding: 10px;
   font-family: 'Patua One', cursive;
-}
-
-.form-container {
-  margin-top: 20px;
 }
 
 .form-control {
@@ -81,13 +83,12 @@ header {
 }
 
 .search {
-  margin-top: 25px;
+  margin-top: 15px;
 }
 
-#spinner {
-/*  display: none;*/
+.spinner {
   text-align: center;
-  width: 400px;
+  width: 100%;
   margin: auto;
   margin-top: 30px;
 }
@@ -103,6 +104,8 @@ header {
   padding: 15px;
   font-weight: bold;
   display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tags:hover {
@@ -110,15 +113,43 @@ header {
 }
 
 .trending {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  padding-bottom: 20px;
+  background-color: #c9ddfc;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08),0 1px 5px 0 rgba(0,0,0,0.06)!important;
 }
 
-.tweets-container {
+.content-container {
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 
 .alert {
   display: none;
   margin-top: 10px;
+}
+
+label {
+  font-family: 'Patua One', cursive;
+  font-size: 16px;
+  font-weight: normal;
+  margin-top: 10px;
+}
+
+.btn {
+  margin-bottom: 10px;
+}
+
+#search-container {
+  background-color: #c9ddfc;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.08),0 1px 5px 0 rgba(0,0,0,0.06)!important;
+  padding-bottom: 20px;
+}
+
+.current_db {
+  margin-top: 0px;
+}
+
+#tweet_container {
+  padding-left: 30px;
+  padding-right: 30px;
 }

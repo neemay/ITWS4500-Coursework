@@ -5,14 +5,22 @@ var feed = angular.module('myApp', []);
 feed.controller('myCtrl', function($scope, $http) {
   //Initialize the loading variable to false;
   $scope.loading = false;
-  //Disable the export button
-  $scope.export_disable = true;
   //Default the number of tweets collected to 10
-  $scope.count = 10;
+  $scope.count = 5;
   //Initialize the filetype
   $scope.filetype = "json";
   //Initialize the filename
   $scope.filename = "neemay-tweets";
+  //Initialize the tweet counters
+  $scope.tweet_results = 0;
+  $scope.tweet_count = 0;
+  
+  //Function to hide the file alerts
+  $scope.hideAlerts = function() {
+    $("#file_success").hide();
+    $("#file_error").hide();
+  }
+  
   //Call the server to get the trends and generate an array with the top 10 trends
   //Set this array to its corresponding scope variable
   $http.get("trends").then(function(response) {
@@ -23,6 +31,12 @@ feed.controller('myCtrl', function($scope, $http) {
       $scope.trending.push({"topic": topic, "url": url});
     }
   });
+  
+  //Get the number of items currently in the database
+  $http.get("dbCount").then(function(response) {
+    $scope.tweet_count = parseInt(response.data, 10);
+  });
+  
   //Called when the search button is clicked
   $scope.search = function () {
     //Hide existing tweets
@@ -31,8 +45,6 @@ feed.controller('myCtrl', function($scope, $http) {
     $scope.error = "";
     //Set the loading variable to true
     $scope.loading = true;
-    //Disable the export button
-    $scope.export_disable = true;
     //Hide file saving errors
     $("#file_success").hide();
     $("#file_error").hide();
@@ -43,44 +55,17 @@ feed.controller('myCtrl', function($scope, $http) {
         count: $scope.count
       }
     }).then(function(response) { //on a successful call
-      //var result = response.data;
-      //$scope.displayTweets(result);
-      //Store the full response data for later use
-      //$scope.json_data = response.data;
-//      //Initialize an array for the tweets
-//      $scope.tweets = [];
-//      //Keep track of how many tweets you got back
-//      var count = 0;
-//      //Use an angular foreach loop to parse through the results and extract
-//      //the desired values for each tweet
-//      //Push each entry to the $scope.teeets array to be displayed in the html
-//      angular.forEach(response.data, function(value) {
-//        var name = value["user"]["name"];
-//        var pic = value["user"]["profile_image_url_https"];
-//        var screen_name = value["user"]["screen_name"];
-//        var date = new Date(value["created_at"]);
-//        var month = date.getMonth() + 1;
-//        var day = date.getDate();
-//        var year = date.getFullYear();
-//        var text = value["text"];
-//        var favorites = value["favorite_count"];
-//        var retweets = value["retweet_count"];
-//        $scope.tweets.push({"name": name, "pic": pic, "screen_name": screen_name, "month": month, "day": day, "year": year, "text": text, "favorites": favorites, "retweets": retweets});
-//        count++;
-//      });
       //Set the number of tweets that were returned
-      $scope.tweet_count = response.data;
+      $scope.tweet_results = response.data;
+      //Update the count of items in the database
+      var new_count = parseInt($scope.tweet_results, 10) + parseInt($scope.tweet_count, 10);
+      $scope.tweet_count = new_count;
       //Set the loading variable to false
       $scope.loading = false;
       //Reset the query to be blank
       $scope.query = "";
-//      //Show new tweets
-//      $("#tweets").show();
-      //Enable the export button
-      $scope.export_disable = false;
     }).catch(function(response) { //if there is an error
-      //Hide the loading spinner
-      //$("#spinner").hide();
+      //Set the loading status to false
       $scope.loading = false;
       //Display the error message
       $scope.error = response.data;
@@ -92,6 +77,7 @@ feed.controller('myCtrl', function($scope, $http) {
     //Hide the file saving errors
     $("#file_success").hide();
     $("#file_error").hide();
+    //Generate the filename
     var filename = $scope.filename + "." + $scope.filetype;
     //Calls the server to check if the file exists
     $http.get("check_file", {
@@ -100,7 +86,7 @@ feed.controller('myCtrl', function($scope, $http) {
       }
     }).then(function(response) {
       //If the server responds with a 200 status, the file does not exist and it can be written to
-      $scope.saveFile();
+      $scope.save();
     }).catch(function(response) {
       //If the server responds with a 400 status, the file exists
       //Open the confirmation modal
@@ -108,14 +94,30 @@ feed.controller('myCtrl', function($scope, $http) {
     });
   }
   
+  //Called when a user clicks the button to display database
   $scope.readTweets = function() {
+    //Set the loading status to true
     $scope.loading2 = true;
+    //Get the tweets from the database
     $http.get("read").then(function(response) {
+      //Call function to display tweets
       $scope.displayTweets(response.data);
       $scope.loading2 = false;
     }).catch(function(response) {
-      $scope.error = response.data;
+      //Set the error status
+      $scope.error = "We have encountered an error reading from the database.";
       $scope.loading2 = false;
+    });
+  }
+  
+  //Called when a user clicks the button to clear the database
+  $scope.resetDB = function() {
+    //Calls the server to delete the tweets
+    $http.get("clear").then(function(response) {
+      $("#tweets").hide();
+      $scope.tweet_count = 0;
+    }).catch(function(response) {
+      $scope.error = "We have encountered an error resetting the database.";
     });
   }
   
@@ -150,19 +152,27 @@ feed.controller('myCtrl', function($scope, $http) {
     $scope.query = "";
     //Show new tweets
     $("#tweets").show();
-    //Enable the export button
-    $scope.export_disable = false;
   }
   
-  //Called when the file is to be saved
-  $scope.saveFile = function() {
+  //Function to get the tweets from the database to be saved
+  $scope.save = function() {
+    $http.get("read").then(function(response) {
+      //Calls saveFile to create the save data
+      $scope.saveFile(response.data);
+    }).catch(function(response) {
+      $scope.error = response.data;
+    });
+  }
+  
+  //Function to generate the save data in the proper format
+  $scope.saveFile = function(data) {
     var result;
     //If the specified filetype is json
     if($scope.filetype == 'json') {
       //Initialize the save_data array
       var save_data = [];
       //Extract the desired fields using an angular foreach loop
-      angular.forEach($scope.json_data, function(value) {
+      angular.forEach(data, function(value) {
         var created_at = value["created_at"];
         var id = value["id"];
         var text = value["text"];
@@ -191,7 +201,7 @@ feed.controller('myCtrl', function($scope, $http) {
       //Iterate through each entry using an angular foreach loop
       //Extract the data and append it to result, separate with commas
       //Add a newline at the end of each entry
-      angular.forEach($scope.json_data, function(value) {
+      angular.forEach(data, function(value) {
         result += '"' + value["created_at"] + '",';
         result += '"' + value["id"] + '",';
         result += '"' + value["text"] + '",';
@@ -211,9 +221,10 @@ feed.controller('myCtrl', function($scope, $http) {
     }
     //If the filetype is XML
     else if($scope.filetype == 'xml') {
+      //Start building the XML string
       result = "<?xml version='1.0' encoding='UTF-8'?>\n";
       result += "<tweets>\n"
-      angular.forEach($scope.json_data, function(value) {
+      angular.forEach(data, function(value) {
         result += "\t<tweet>\n";
         result += "\t\t<created_at>" + value["created_at"] + "</created_at>\n";
         result += "\t\t<id>" + value["id"] + "</id>\n";

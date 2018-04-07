@@ -14,11 +14,11 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', (req, res) => res.sendFile('public/lab7.html', {root: __dirname}));
 
 //Connect to the Mongo Database
-//CHECK THIS LINE
 mongoose.connect('mongodb://localhost/tweets');
 
 //Set up the database schema
 var Schema = mongoose.Schema;
+
 //Save the whole tweet object in the database for extensibility
 var tweetSchema = new Schema({
   tweet: Object
@@ -27,7 +27,6 @@ var tweetSchema = new Schema({
 //Create a model using this schema
 var Tweet = mongoose.model('Tweet', tweetSchema);
 module.exports = Tweet;
-
 
 //Set up Twitter client
 //Keys are located in a separate .env file to enhance security
@@ -42,6 +41,14 @@ var client = new Twitter({
 app.get('/trends', function(req, res) {
   client.get('trends/place', {id: '23424977'}, function(error, data, response) {
     res.send(data);
+  });
+});
+
+//Function to get the current number of items in the database
+app.get('/dbCount', function(req,res) {
+  Tweet.find().exec(function (err, results) {
+    count = results.length;
+    res.send("" + count + "");
   });
 });
 
@@ -78,8 +85,9 @@ app.get('/query', function(req, res) {
       if(tweets == count) {
         //Close the stream
         stream.destroy();
-        //Send the tweet array back to the angular file
+        //Send angular the number of tweets collected
         res.send("" + tweets + "");
+        //Iterate through the tweets and save each to the database
         for(var i = 0; i < tweets; i++) {
           var new_tweet = new Tweet({
             tweet: data[i]
@@ -103,15 +111,29 @@ app.get('/query', function(req, res) {
   }); 
 });
 
-app.get('/read', function(req,res) {
+//Function to read tweets from the database
+app.get('/read', function(req, res) {
   console.log("Reading tweets from database");
+  //Query to get all tweets from the database
   Tweet.find({}, function(err, docs) {
     if(err) throw err;
     var tweets = [];
     for(var i in docs) {
       tweets.push(docs[i].tweet);
     }
+    //Send the tweets to the angular
     res.send(tweets);
+  });
+});
+
+//Function to clear the tweets from the database
+app.get('/clear', function(req, res) {
+  console.log("Clearing database");
+  //Query to remove all tweets from the database
+  Tweet.remove({}, function(err, docs) {
+    if(err) throw err;
+    console.log("Database cleared");
+    res.sendStatus(200);
   });
 });
 
