@@ -1,0 +1,18 @@
+{
+  "name": "lab8",
+  "version": "1.0.0",
+  "description": "Yarden Ne'eman Web Science Lab 8",
+  "main": "lab8.js",
+  "scripts": {
+    "start": "node lab8.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yarden Ne'eman",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "mongoose": "^5.0.14",
+    "twitter": "^1.7.1"
+  }
+}
