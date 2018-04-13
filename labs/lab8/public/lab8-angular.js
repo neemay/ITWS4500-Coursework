@@ -24,13 +24,17 @@ feed.controller('myCtrl', function($scope, $http) {
   
   //Call the server to get the trends and generate an array with the top 10 trends
   //Set this array to its corresponding scope variable
-  if(navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      $scope.getTrends(position);
-    });
-  }
-  else {
-    $scope.getTrends(null);
+  $scope.trends = function() {
+    $("#trends").hide();
+    $("#spinner3").show();
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        $scope.getTrends(position);
+      });
+    }
+    else {
+      $scope.getTrends(null);
+    } 
   }
   
   $scope.getTrends = function(position) {
@@ -53,7 +57,12 @@ feed.controller('myCtrl', function($scope, $http) {
       var url = data["0"].trends[i]["url"];
       $scope.trending.push({"topic": topic, "url": url});
     }
+    $("#spinner3").hide();
+    $("#trends").show();
   }
+  
+  //Initial call to get trends
+  $scope.trends();
   
   //Get the number of items currently in the database
   $http.get("dbCount").then(function(response) {

@@ -181,6 +181,19 @@ label {
   float: right;
 }
 
+#spinner3 {
+  display: none;
+}
+
+.refresh {
+  width: 30px;
+  padding: 5px;
+}
+
+.trending-label {
+  display: inline-block;
+}
+
 @media only screen and (max-width: 768px) {
   .header-container {
     position: relative;
