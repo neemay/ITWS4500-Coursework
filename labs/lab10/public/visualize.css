@@ -53,3 +53,9 @@ p {
   text-align: center;
   margin-bottom: 0px;
 }
+
+@media screen and (max-width: 490px) {
+  .back {
+    float: none;
+  }
+}
