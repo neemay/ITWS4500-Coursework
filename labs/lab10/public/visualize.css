@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css?family=Patua+One');
+
+body {
+  background-color: #E7ECEE;
+}
+
+h1 {
+  margin: 0px;
+  font-size: 32px;
+  display: inline-block;
+}
+
+h2 {
+  font-family: 'Patua One', cursive;
+  font-size: 28px;
+}
+
+h3 {
+  font-family: 'Patua One', cursive;
+  font-size: 18px;
+  margin-top: 0px;
+}
+
+.row {
+  margin: 0px;
+}
+
+header {
+  background-color: white;
+  margin: 0px;
+  padding: 10px;
+  font-family: 'Patua One', cursive;
+}
+
+.logo {
+  width: 50px;
+  margin-right: 10px;
+  float: left;
+}
+
+.btn-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.back {
+/*  text-align: right;*/
+/*  margin-top: 20px;*/
+  float: right;
+}

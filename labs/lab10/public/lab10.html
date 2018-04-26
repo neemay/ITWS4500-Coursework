@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<!-- Angular Application -->
+<html ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Yarden Ne'eman Lab 10</title>
+    <!-- Link to Minified Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="icon" href="Twitter_Logo_Blue.png">
+    <link rel="stylesheet" href="lab10.css">
+  </head>
+  <!-- Angular Controller -->
+  <body ng-controller="myCtrl">
+    <header>
+      <div class="row">
+        <div class="header-container offset-xs-1 col-xs-10 offset-sm-1 col-sm-10 offset-md-1 col-md-10 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+          <h1>
+            <img class="logo" src="Twitter_Logo_Blue.png">
+            Welcome to the Tweet Finder!
+            <img class="logo float" src="Twitter_Logo_Blue.png">
+          </h1>
+          <p>Search for, store, and download tweets directly from Twitter.</p>
+          <a id="scroll" href="#content" class="btn btn-primary">Start</a>
+        </div>
+      </div>
+<!--
+      <img class='logo' src="https://logos-download.com/wp-content/uploads/2016/02/Twitter_logo_bird_transparent_png.png">
+      <h1>Tweet Finder</h1>
+-->
+    </header>
+    <div class='container-fluid row' id="content">
+      <div id="search-container" class='content-container col-xs-12 col-sm-12 col-md-3 col-lg-3'>
+        <h2>Insert your search criteria and we'll save these tweets!</h2>
+        <form class="row form-container">
+            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-12">
+              <label for="search">Search for:</label>
+              <input id="search" type="text" ng-model="query" class="form-control" />
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-12">
+              <label for="count">Number of tweets:</label>
+              <input id="count" type="number" ng-model="count" class="form-control" min="1" max="25"/>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-12">
+              <button ng-click="search()" class="search btn btn-primary">Search</button>
+            </div>
+        </form>
+        <div id="spinner" ng-show="loading" class="spinner"><img class="loading" src="loading.gif"></div>
+        <div id="error" ng-show="error"><h2>{{error}}</h2></div>
+        <div id="foundTweets">
+          <h3 ng-show="tweet_results">{{tweet_results}} tweets were saved.</h3>
+          <h2>Export Saved Tweets:</h2>
+          <form class='row form-container'>
+            <div class='col-xs-12 col-sm-10 col-md-10 col-lg-12'>
+              <label for="filetype">Filetype:</label>
+              <select id="filetype" ng-model="filetype" name='filetype' class='dropdown form-control' ng-click="hideAlerts()">
+                <option class="form-control" value="json">JSON</option>
+                <option class="form-control" value="csv">CSV</option>
+                <option class="form-control" value="xml">XML</option>
+              </select>
+            </div>
+            <div class='col-xs-12 col-sm-10 col-md-10 col-lg-12'>
+              <label for="filename">Filename (no extension):</label>
+              <input id="filename" type="text" ng-model="filename" class="form-control" ng-click="hideAlerts()">
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-12">
+              <button id="export" ng-click="export()" class="btn btn-primary search" ng-disabled="!tweet_count">Export</button>
+            </div>
+          </form>
+          <div id="file_success" class="alert alert-success d-none">File was successfully saved</div>
+          <div id="file_error" class="alert alert-danger d-none">File could not be saved. Please try again later</div>
+        </div>
+      </div>
+      <div id="tweet_container" class="content-container col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <h2 class="current_db">There are currently {{tweet_count}} saved tweets.</h2>
+        <button ng-click="readTweets()" class="btn btn-primary">Display Tweets</button>
+        <a href="/visualize"><button class="btn btn-primary">Visualize</button></a>
+        <button class="btn btn-warning" data-toggle="modal" data-target="#confirm_delete">Reset Tweets</button>
+        <div id="spinner2" ng-show="loading2" class="spinner"><img class="loading" src="loading.gif"></div>
+        <div id="tweets" ng-show="tweets">
+          <div class="tweet" ng-repeat="tweet in tweets">
+            <div class='tweet-content col-sm-12 col-md-12 col-lg-12'>
+              <img class='profile' ng-src='{{tweet.pic}}' onerror=this.src='anon.jpg';>
+              <a class='screename' href='https://www.twitter.com/{{tweet.screen_name}}'>{{tweet.name}} </a>
+              <span class='handle'>@{{tweet.screen_name}}</span>
+              <span class='date'>{{tweet.month}}/{{tweet.day}}/{{tweet.year}}</span>
+              <div class='tweet-text'>
+                {{tweet.text}}
+                <span class='stats'>Favorites: {{tweet.favorites}} Retweets: {{tweet.retweets}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='content-container trending col-xs-12 col-sm-12 col-md-3 col-lg-3'>
+        <h2 class="trending-label">Trending Topics Near You:</h2>
+        <img src="refresh.png" ng-click="trends()" class="refresh btn btn-small btn-light">
+<!--        <button class="btn btn-sm btn-primary" ng-click="trends()">Refresh</button>-->
+        <div id="spinner3" class="spinner"><img class="loading" src="loading.gif"></div>
+        <div id="trends">
+          <div ng-repeat="trend in trending">
+            <a class='tags' href='{{trend.url}}'>{{trend.topic}}</a>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="exists_modal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2>The file {{filename}}.{{filetype}} already exists. Would you like to replace it?</h2>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <button type="button" class="btn btn-danger" id="overwrite" ng-click="save()" data-dismiss="modal">Yes</button>
+              <button type="button" class="btn btn-primary" id="cancel" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="confirm_delete">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2>Are you sure you want to delete your saved tweets?</h2>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <button type="button" class="btn btn-danger" id="reset" ng-click="resetDB()" data-dismiss="modal">Yes</button>
+              <button type="button" class="btn btn-primary" id="cancel" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <!-- Link to jQuery -->
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <!-- Link to Bootstrap Javascript -->
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <!-- Link to Angular -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+  <!-- Link to script -->
+  <script src="lab10-angular.js"></script>
+</html>

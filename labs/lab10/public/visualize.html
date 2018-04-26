@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!-- Angular Application -->
+<html ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Yarden Ne'eman Lab 10</title>
+    <!-- Link to Minified Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="icon" href="Twitter_Logo_Blue.png">
+    <link rel="stylesheet" href="visualize.css">
+  </head>
+  <body ng-controller="myCtrl">
+    <header>
+      <img class='logo' src="Twitter_Logo_Blue.png">
+      <h1>Tweet Visualizer</h1>
+      <a href="/"><button class="btn btn-primary back">Back to Tweet Finder</button></a>
+    </header>
+    <div class="container-fluid">
+      <div class="btn-container">
+        <h3>Click to view visualizations</h3>
+        <button class="btn btn-success" ng-click="queries()">Queries</button>
+        <button class="btn btn-success" ng-click="retweets()">Retweets</button>
+        <button class="btn btn-success" ng-click="locations()">Locations</button>
+      </div>
+      <h2 align="center">{{chart_title}}</h2>
+      <div id="chart-container" class="graph-container col-sm-12 offset-md-2 col-md-8 offset-lg-2 col-lg-8">
+        <canvas id="queryChart"></canvas>
+        <canvas id="retweetChart"></canvas>
+        <canvas id="locationChart"></canvas>
+      </div>
+    </div>
+    
+  </body>
+  <!-- Link to jQuery -->
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <!-- Link to Bootstrap Javascript -->
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <!-- Link to Angular -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+  <!-- Link to script -->
+  <script src="visualize.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+</html>
