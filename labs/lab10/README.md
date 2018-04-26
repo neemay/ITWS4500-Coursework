@@ -15,3 +15,5 @@ Things to note for this lab:
 6) I removed the "max" attribute on my tweet count (it used to be 25) so that more data could be collected to create more meaningful visualizations.
 
 7) I added into my database a field called "query" so that each tweet would also store the query that it was collected from. I then added a function in the server that would return the query for each tweet which I could then use to generate the query visualization.
+
+8) If for some reason the application cannot get the data to create the visualization, an error state is presented.

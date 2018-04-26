@@ -4,6 +4,7 @@
   "description": "Yarden Ne'eman Web Science Lab 10",
   "main": "lab10.js",
   "scripts": {
+    "start": "node lab10.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Yarden Ne'eman",
