@@ -22,13 +22,14 @@
         <h3>Click to view visualizations</h3>
         <button class="btn btn-success" ng-click="queries()">Queries</button>
         <button class="btn btn-success" ng-click="retweets()">Retweets</button>
-        <button class="btn btn-success" ng-click="locations()">Locations</button>
+        <button class="btn btn-success" ng-click="tags()">Hashtags</button>
       </div>
       <h2 align="center">{{chart_title}}</h2>
+      <p align="cener">{{chart_description}}</p>
       <div id="chart-container" class="graph-container col-sm-12 offset-md-2 col-md-8 offset-lg-2 col-lg-8">
         <canvas id="queryChart"></canvas>
         <canvas id="retweetChart"></canvas>
-        <canvas id="locationChart"></canvas>
+        <canvas id="tagChart"></canvas>
       </div>
     </div>
     

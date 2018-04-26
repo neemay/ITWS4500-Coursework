@@ -18,6 +18,7 @@ vis.controller('myCtrl', function($scope, $http) {
     $("#queryChart").hide();
     $http.get('queries').then(function(response) {
       $scope.chart_title = "Tweet Queries";
+      $scope.chart_description = "Breakdown of the queries used to collect saved tweets"
       var queries = response.data;
       var arr = [];
       for(var i in queries) {
@@ -44,15 +45,17 @@ vis.controller('myCtrl', function($scope, $http) {
     });
     $("#queryChart").show();
     $("#retweetChart").hide();
-    $("#locationChart").hide();
+    $("#tagChart").hide();
   }
   $scope.queries();
   $scope.chart_title = "Tweet Queries";
+  $scope.chart_description = "Breakdown of the queries used to collect saved tweets"
   
   $scope.retweets = function() {
     $("#retweetChart").hide();
     $http.get('read').then(function(response) {
-      $scope.chart_title = "Was the tweet a retweet?";
+      $scope.chart_title = "Retweets";
+      $scope.chart_description = "Was this an original tweet or a retweet?"
       var tweets = response.data;
       var arr = [0, 0];
       $scope.colors.push($scope.randomColors());
@@ -69,7 +72,7 @@ vis.controller('myCtrl', function($scope, $http) {
       var chart1 = new Chart(ctx, {
         type: "doughnut",
         data: {
-          labels: ["Yes", "No"],
+          labels: ["Retweet", "Original"],
           datasets: [{
             data: arr,
             backgroundColor: $scope.colors
@@ -79,43 +82,62 @@ vis.controller('myCtrl', function($scope, $http) {
     });
     $("#queryChart").hide();
     $("#retweetChart").show();
-    $("#locationChart").hide();
+    $("#tagChart").hide();
   }
-//  var ctx = document.getElementById("myChart");
-//  var myChart = new Chart(ctx, {
-//      type: 'bar',
-//      data: {
-//          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-//          datasets: [{
-//              label: '# of Votes',
-//              data: [12, 19, 3, 5, 2, 3],
-//              backgroundColor: [
-//                  'rgba(255, 99, 132, 0.2)',
-//                  'rgba(54, 162, 235, 0.2)',
-//                  'rgba(255, 206, 86, 0.2)',
-//                  'rgba(75, 192, 192, 0.2)',
-//                  'rgba(153, 102, 255, 0.2)',
-//                  'rgba(255, 159, 64, 0.2)'
-//              ],
-//              borderColor: [
-//                  'rgba(255,99,132,1)',
-//                  'rgba(54, 162, 235, 1)',
-//                  'rgba(255, 206, 86, 1)',
-//                  'rgba(75, 192, 192, 1)',
-//                  'rgba(153, 102, 255, 1)',
-//                  'rgba(255, 159, 64, 1)'
-//              ],
-//              borderWidth: 1
-//          }]
-//      },
-//      options: {
-//          scales: {
-//              yAxes: [{
-//                  ticks: {
-//                      beginAtZero:true
-//                  }
-//              }]
-//          }
-//      }
-//  });
+
+  $scope.tags = function() {
+    $("#locationsChart").hide();
+    $http.get('read').then(function(response) {
+      $scope.chart_title = "Hashtags";
+      $scope.chart_description = "Breakdown of the hashtags used in these tweets"
+      var tweets = response.data;
+      var hashtags = [];
+      for(var key in tweets) {
+      if(tweets[key].entities != null) {
+        var value = tweets[key].entities.hashtags;
+        for(var i in value) {
+          //Compare using the lowercase versions of the tweets
+          var tag = value[i].text.toLowerCase();
+          //If this hashtag already exists, increment the value
+          if(hashtags[tag] >= 1) {
+            hashtags[tag] += 1; 
+          }
+          //Otherwise, set its value to 1 and add it to the array
+          else {
+            hashtags[tag] = 1;
+          }
+        } 
+      }
+    }
+      var ctx = $("#tagChart");
+      var chart1 = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: Object.keys(hashtags),
+          datasets: [{
+            data: Object.values(hashtags),
+            backgroundColor: $scope.colors
+          }]
+        },
+        options: {
+          legend: {
+            display: false
+          },
+          scales: {
+            yAxes: [{
+              ticks: {
+                min: 0,
+                stepSize: 1
+              }
+            }]
+          }
+        }
+      });
+    });
+    
+    
+    $("#queryChart").hide();
+    $("#retweetChart").hide();
+    $("#tagChart").show();
+  }
 });

@@ -13,6 +13,7 @@ h1 {
 h2 {
   font-family: 'Patua One', cursive;
   font-size: 28px;
+  margin-bottom: 0px;
 }
 
 h3 {
@@ -45,7 +46,10 @@ header {
 }
 
 .back {
-/*  text-align: right;*/
-/*  margin-top: 20px;*/
   float: right;
+}
+
+p {
+  text-align: center;
+  margin-bottom: 0px;
 }
